@@ -18,6 +18,10 @@ app.use(
   })
 );
 
+const authRoutes = require("./routes/auth");
+
+app.use("/api/", authRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello World");
 });

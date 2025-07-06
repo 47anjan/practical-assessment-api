@@ -1,0 +1,51 @@
+const express = require("express");
+const bcrypt = require("bcrypt");
+const signupValidation = require("../utils/signupValidation");
+const User = require("../models/user");
+
+const router = express.Router();
+
+// Signup route
+router.post("/signup", async (req, res) => {
+  try {
+    // Validate request body
+    signupValidation(req);
+
+    const { password } = req.body;
+
+    const existingEmail = await User.findOne({
+      email: req.body.email?.toLowerCase(),
+    });
+
+    if (existingEmail) {
+      throw new Error("Email already exists");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      ...req.body,
+      password: hashedPassword,
+    });
+    const user = await newUser.save();
+
+    const token = await user.getJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+    });
+
+    const { password: _, ...userWithoutPassword } = user.toObject();
+
+    res.status(201).json(userWithoutPassword);
+  } catch (err) {
+    console.error("Error creating user:", err);
+    console.log(err.message);
+
+    res.status(501).send({
+      message: err.message || "Internal server error",
+    });
+  }
+});
+
+module.exports = router;
