@@ -2,6 +2,7 @@ const express = require("express");
 
 const cors = require("cors");
 const cookie = require("cookie-parser");
+const connectDB = require("./config/database");
 require("dotenv").config();
 
 const app = express();
@@ -21,6 +22,13 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.listen(process.env.PORT, () => {
-  console.log("Server is running on port 5000");
-});
+connectDB()
+  .then(() => {
+    console.log("Database connected successfully");
+    app.listen(process.env.PORT, () => {
+      console.log("Server is running on port 5000");
+    });
+  })
+  .catch((err) => {
+    console.error("Database connection failed:", err);
+  });
