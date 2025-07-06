@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const signupValidation = require("../utils/signupValidation");
+const loginValidation = require("../utils/loginValidation");
 const User = require("../models/user");
 
 const router = express.Router();
@@ -45,6 +46,36 @@ router.post("/signup", async (req, res) => {
     res.status(501).send({
       message: err.message || "Internal server error",
     });
+  }
+});
+
+// Login route
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    loginValidation(req);
+
+    const user = await User.findOne({ email: email?.toLowerCase() });
+
+    if (!user) return res.status(401).send({ message: "Invalid credentials" });
+
+    const isMatch = await user.validatePassword(password);
+    if (!isMatch)
+      return res.status(401).send({ message: "Invalid credentials" });
+
+    const token = await user.getJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+    });
+
+    const { password: _, ...userWithoutPassword } = user.toObject();
+
+    res.send(userWithoutPassword);
+  } catch (err) {
+    console.error("Error logging in:", err);
+    res.status(501).send({ message: err.message });
   }
 });
 
