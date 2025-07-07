@@ -127,4 +127,34 @@ router.get("/user/wishlist", authorized, async (req, res) => {
   }
 });
 
+router.delete(
+  "/user/wishlist/remove/:wishListRecipeId",
+  authorized,
+  async (req, res) => {
+    try {
+      const { wishListRecipeId } = req.params;
+      const loggedInUser = res.user;
+
+      if (!wishListRecipeId) {
+        res.status(401).send({ message: "Recipe Id cant be empty" });
+      }
+
+      const recipe = await CartRecipe.findOne({
+        idMeal: wishListRecipeId,
+        userId: loggedInUser._id,
+      });
+
+      if (!recipe) {
+        throw new Error("Recipe does not exist!");
+      }
+
+      const data = await recipe.deleteOne();
+
+      res.send(data);
+    } catch (err) {
+      return res.status(401).send({ message: err.message });
+    }
+  }
+);
+
 module.exports = router;
