@@ -36,4 +36,18 @@ router.post("/user/cart/add", authorized, async (req, res) => {
   }
 });
 
+router.get("/user/cart", authorized, async (req, res) => {
+  try {
+    const loggedInUser = res.user;
+
+    const data = await FavoriteRecipe.find({
+      userId: loggedInUser._id,
+    });
+
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;

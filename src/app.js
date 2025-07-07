@@ -20,9 +20,11 @@ app.use(
 
 const authRoutes = require("./routes/auth");
 const profileRoute = require("./routes/profile");
+const userRoute = require("./routes/user");
 
 app.use("/api/", authRoutes);
 app.use("/api/", profileRoute);
+app.use("/api/", userRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
