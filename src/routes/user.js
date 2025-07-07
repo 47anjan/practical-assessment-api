@@ -58,11 +58,13 @@ router.delete(
       const { cartRecipeId } = req.params;
       const loggedInUser = res.user;
 
+      console.log(cartRecipeId);
+
       if (!cartRecipeId) {
         res.status(401).send({ message: "Recipe Id cant be empty" });
       }
 
-      const recipe = await FavoriteRecipe.findOne({
+      const recipe = await CartRecipe.findOne({
         idMeal: cartRecipeId,
         userId: loggedInUser._id,
       });
