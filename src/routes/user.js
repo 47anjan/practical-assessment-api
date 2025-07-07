@@ -13,7 +13,7 @@ router.post("/user/cart/add", authorized, async (req, res) => {
     const loggedInUser = res.user;
 
     const existRecipe = await CartRecipe.findOne({
-      id,
+      idMeal,
       userId: loggedInUser._id,
     });
 
