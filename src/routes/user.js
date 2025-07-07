@@ -58,8 +58,6 @@ router.delete(
       const { cartRecipeId } = req.params;
       const loggedInUser = res.user;
 
-      console.log(cartRecipeId);
-
       if (!cartRecipeId) {
         res.status(401).send({ message: "Recipe Id cant be empty" });
       }
