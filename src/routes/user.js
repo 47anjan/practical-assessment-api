@@ -113,4 +113,18 @@ router.post("/user/wishlist/add", authorized, async (req, res) => {
   }
 });
 
+router.get("/user/wishlist", authorized, async (req, res) => {
+  try {
+    const loggedInUser = res.user;
+
+    const data = await WishListRecipe.find({
+      userId: loggedInUser._id,
+    });
+
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 module.exports = router;
