@@ -82,4 +82,35 @@ router.delete(
   }
 );
 
+router.post("/user/wishlist/add", authorized, async (req, res) => {
+  try {
+    cartRecipeValidation(req);
+
+    const { strMeal, strMealThumb, idMeal } = req.body;
+    const loggedInUser = res.user;
+
+    const existRecipe = await WishListRecipe.findOne({
+      idMeal,
+      userId: loggedInUser._id,
+    });
+
+    if (existRecipe) {
+      res.status(401).send({ message: "Recipe is already exist on the list" });
+    }
+
+    const data = await CartRecipe({
+      idMeal,
+      strMeal,
+      strMealThumb,
+      userId: loggedInUser._id,
+    });
+
+    await data.save();
+
+    res.send(data);
+  } catch (err) {
+    return res.status(401).send({ message: err.message });
+  }
+});
+
 module.exports = router;
