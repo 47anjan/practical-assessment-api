@@ -98,7 +98,7 @@ router.post("/user/wishlist/add", authorized, async (req, res) => {
       res.status(401).send({ message: "Recipe is already exist on the list" });
     }
 
-    const data = await CartRecipe({
+    const data = await WishListRecipe({
       idMeal,
       strMeal,
       strMealThumb,
@@ -139,7 +139,7 @@ router.delete(
         res.status(401).send({ message: "Recipe Id cant be empty" });
       }
 
-      const recipe = await CartRecipe.findOne({
+      const recipe = await WishListRecipe.findOne({
         idMeal: wishListRecipeId,
         userId: loggedInUser._id,
       });
