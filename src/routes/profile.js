@@ -14,7 +14,7 @@ router.get("/profile/view", authorized, async (req, res) => {
 
     res.send(userWithoutPassword);
   } catch (err) {
-    return res.status(401).send({ message: "Unauthorized" });
+    return res.status(401).send({ message: err });
   }
 });
 
