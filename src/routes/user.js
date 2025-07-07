@@ -1,7 +1,9 @@
 const express = require("express");
 const { authorized } = require("../middleware/auth");
 const cartRecipeValidation = require("../utils/cartRecipeValidation");
+const wishListRecipeValidation = require("../utils/wishListRecipeValidation");
 const CartRecipe = require("../models/cartRecipe");
+const WishListRecipe = require("../models/wishlistRecipe");
 
 const router = express.Router();
 
