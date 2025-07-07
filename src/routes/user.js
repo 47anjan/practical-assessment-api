@@ -84,7 +84,7 @@ router.delete(
 
 router.post("/user/wishlist/add", authorized, async (req, res) => {
   try {
-    cartRecipeValidation(req);
+    wishListRecipeValidation(req);
 
     const { strMeal, strMealThumb, idMeal } = req.body;
     const loggedInUser = res.user;
