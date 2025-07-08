@@ -1,7 +1,7 @@
 const recipeValidation = (req) => {
-  const { name, category, ingredients, instructions } = req.body;
+  const { recipeName, category, ingredients, instructions } = req.body;
 
-  if (!name) {
+  if (!recipeName) {
     throw new Error("Name cannot be empty");
   }
 

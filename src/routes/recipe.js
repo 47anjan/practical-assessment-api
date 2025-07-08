@@ -1,7 +1,8 @@
 const express = require("express");
 const { authorized } = require("../middleware/auth");
-const recipeValidation = require("../utils/recipeValidation");
+
 const Recipe = require("../models/recipe");
+const recipeValidation = require("../utils/recipeValidation");
 
 const router = express.Router();
 
@@ -9,11 +10,11 @@ router.post("/recipes/add", authorized, async (req, res) => {
   try {
     recipeValidation(req);
 
-    const { name, category, ingredients, instructions, image } = req.body;
+    const { recipeName, category, ingredients, instructions, image } = req.body;
     const loggedInUser = res.user;
 
     const data = await Recipe({
-      name,
+      recipeName,
       category,
       ingredients,
       instructions,
@@ -29,7 +30,7 @@ router.post("/recipes/add", authorized, async (req, res) => {
   }
 });
 
-router.get("/user/recipes", authorized, async (req, res) => {
+router.get("/recipes", async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
 

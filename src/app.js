@@ -21,10 +21,12 @@ app.use(
 const authRoutes = require("./routes/auth");
 const profileRoute = require("./routes/profile");
 const userRoute = require("./routes/user");
+const recipeRoute = require("./routes/recipe");
 
 app.use("/api/", authRoutes);
 app.use("/api/", profileRoute);
 app.use("/api/", userRoute);
+app.use("/api/", recipeRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
