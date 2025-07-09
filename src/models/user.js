@@ -37,8 +37,7 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-// for test the auth
-// JTW_SECRET="16d74673bc7728c75ac00ad0633225f4a2a3ea1086216abf04267c8756f1a210"
+
 userSchema.methods.getJWT = async function () {
   const user = this;
 
